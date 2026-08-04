@@ -28,7 +28,13 @@ router.get(async (req, res) => {
     const limit = parseInt(req.query.limit || '12', 10);
     const skip  = (page - 1) * limit;
 
-    const query = { publishedAt: { $lte: new Date() } };
+    const query = { 
+      $or: [
+        { publishedAt: { $lte: new Date() } },
+        { publishedAt: { $exists: false } },
+        { publishedAt: null }
+      ]
+    };
 
     const [articles, total] = await Promise.all([
       Article.find(query)
