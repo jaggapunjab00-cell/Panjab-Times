@@ -33,21 +33,21 @@ function Avatar({ name, size = 28 }) {
 // ── HERO CARD ────────────────────────────────────────────
 export function HeroCard({ article, onClick }) {
   const { author, title, body, imageUrl, createdAt, readTime } = article;
-  const excerpt = body.length > 220 ? body.slice(0, 220).trimEnd() + '…' : body;
+  const excerptLen = imageUrl ? 220 : 600;
+  const excerpt = body.length > excerptLen ? body.slice(0, excerptLen).trimEnd() + '…' : body;
   const timeAgo = createdAt ? formatDistanceToNow(new Date(createdAt), { addSuffix: true }) : '';
 
   return (
-    <article className="hero-article" onClick={onClick}
+    <article className={`hero-article ${!imageUrl ? 'no-image' : ''}`} onClick={onClick}
       role="button" tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && onClick?.()}>
 
       {/* Image side */}
-      <div className="hero-img-wrap">
-        {imageUrl
-          ? <img src={imageUrl} alt={title} className="hero-img" />
-          : <div className="hero-img-placeholder" />
-        }
-      </div>
+      {imageUrl && (
+        <div className="hero-img-wrap">
+          <img src={imageUrl} alt={title} className="hero-img" />
+        </div>
+      )}
 
       {/* Content side */}
       <div className="hero-body">
@@ -100,20 +100,20 @@ export function HeroCard({ article, onClick }) {
 // ── FEATURE CARD (medium, 2-col row) ────────────────────
 export function FeatureCard({ article, onClick }) {
   const { author, title, body, imageUrl, createdAt, readTime } = article;
-  const excerpt = body.length > 130 ? body.slice(0, 130).trimEnd() + '…' : body;
+  const excerptLen = imageUrl ? 130 : 250;
+  const excerpt = body.length > excerptLen ? body.slice(0, excerptLen).trimEnd() + '…' : body;
   const timeAgo = createdAt ? formatDistanceToNow(new Date(createdAt), { addSuffix: true }) : '';
 
   return (
-    <article className="feature-card" onClick={onClick}
+    <article className={`feature-card ${!imageUrl ? 'no-image' : ''}`} onClick={onClick}
       role="button" tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && onClick?.()}>
 
-      <div className="feature-img-wrap">
-        {imageUrl
-          ? <img src={imageUrl} alt={title} className="feature-img" />
-          : <div className="img-placeholder" />
-        }
-      </div>
+      {imageUrl && (
+        <div className="feature-img-wrap">
+          <img src={imageUrl} alt={title} className="feature-img" />
+        </div>
+      )}
 
       <div className="feature-body">
         <div className="card-author">
@@ -141,20 +141,20 @@ export function FeatureCard({ article, onClick }) {
 // ── STREAM CARD (small, 3-col grid) ─────────────────────
 export default function ArticleCard({ article, onClick }) {
   const { author, title, body, imageUrl, createdAt, readTime } = article;
-  const excerpt = body.length > 100 ? body.slice(0, 100).trimEnd() + '…' : body;
+  const excerptLen = imageUrl ? 100 : 200;
+  const excerpt = body.length > excerptLen ? body.slice(0, excerptLen).trimEnd() + '…' : body;
   const timeAgo = createdAt ? formatDistanceToNow(new Date(createdAt), { addSuffix: true }) : '';
 
   return (
-    <article className="stream-card" onClick={onClick}
+    <article className={`stream-card ${!imageUrl ? 'no-image' : ''}`} onClick={onClick}
       role="button" tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && onClick?.()}>
 
-      <div className="stream-img-wrap">
-        {imageUrl
-          ? <img src={imageUrl} alt={title} className="stream-img" />
-          : <div className="img-placeholder" />
-        }
-      </div>
+      {imageUrl && (
+        <div className="stream-img-wrap">
+          <img src={imageUrl} alt={title} className="stream-img" />
+        </div>
+      )}
 
       <div className="stream-body">
         <div className="card-author">

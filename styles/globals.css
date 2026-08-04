@@ -502,6 +502,41 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ─────────────────────────────────────────
+   NO-IMAGE CARD VARIATIONS
+───────────────────────────────────────── */
+.hero-article.no-image {
+  grid-template-columns: 1fr;
+  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(248,250,252,0.95));
+}
+
+.hero-article.no-image .hero-body {
+  padding: 4rem 10%;
+  text-align: center;
+  align-items: center;
+}
+
+.hero-article.no-image .hero-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+.hero-article.no-image .hero-excerpt {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.25rem;
+  line-height: 1.8;
+}
+
+.feature-card.no-image, .stream-card.no-image {
+  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(248,250,252,0.95));
+}
+
+.feature-card.no-image .feature-body, 
+.stream-card.no-image .stream-body {
+  justify-content: center;
+}
+
+/* ─────────────────────────────────────────
    SHARED CARD TYPOGRAPHY
 ───────────────────────────────────────── */
 .card-author {
