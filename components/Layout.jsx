@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+import Link from 'next/link';
 import LocationCounter from './LocationCounter';
 import MetricsModal from './MetricsModal';
 
@@ -60,6 +61,12 @@ export default function Layout({ children, title, onPublish }) {
             </div>
 
             <div className="masthead-right" style={{ gap: '1rem' }}>
+              <Link href="/chat" className="masthead-publish-btn" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', boxShadow: 'none' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Group Chat
+              </Link>
               <button className="masthead-publish-btn" onClick={() => setShowMetrics(true)} style={{ background: 'transparent', boxShadow: 'none', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M12 20V10"/>

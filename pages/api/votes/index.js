@@ -1,52 +1,46 @@
 import connectDB from '../../../lib/mongodb';
 import Vote from '../../../models/Vote';
-import { PUNJAB_DISTRICTS } from '../../../lib/districts';
+import { PUNJAB_DISTRICTS } from '../../../models/Vote';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
-    return res.status(405).json({ success: false, message: 'Method Not Allowed' });
+    return res.status(405).json({ success: false, message: 'Method not allowed' });
   }
 
   try {
     await connectDB();
 
-    // Aggregate counts of votes grouped by district
-    const voteAgg = await Vote.aggregate([
+    // Aggregate vote counts grouped by district
+    const voteCounts = await Vote.aggregate([
       {
         $group: {
-          _id: '$district',
+          _id:   '$district',
           count: { $sum: 1 },
         },
       },
     ]);
 
-    const total = await Vote.countDocuments();
+    // Build a full map so every district appears (even with 0 votes)
+    const countMap = {};
+    PUNJAB_DISTRICTS.forEach((d) => (countMap[d] = 0));
+    voteCounts.forEach(({ _id, count }) => {
+      if (_id) countMap[_id] = count;
+    });
 
-    // Map through all districts to ensure a complete list, even for those with 0 votes
-    const data = PUNJAB_DISTRICTS.map((districtName) => {
-      const match = voteAgg.find((v) => v._id === districtName);
-      const count = match ? match.count : 0;
-      const percentage =
-        total > 0 ? parseFloat(((count / total) * 100).toFixed(1)) : 0;
-      return {
-        district: districtName,
+    const total = Object.values(countMap).reduce((a, b) => a + b, 0);
+
+    // Shape for the chart: sorted by count descending
+    const data = Object.entries(countMap)
+      .map(([district, count]) => ({
+        district,
         count,
-        percentage,
-      };
-    });
+        percentage: total > 0 ? ((count / total) * 100).toFixed(1) : '0.0',
+      }))
+      .sort((a, b) => b.count - a.count);
 
-    // Sort descending by count, then alphabetically by district
-    data.sort(
-      (a, b) => b.count - a.count || a.district.localeCompare(b.district)
-    );
-
-    return res.status(200).json({
-      success: true,
-      data,
-      total,
-    });
+    res.status(200).json({ success: true, data, total });
   } catch (error) {
-    console.error('Error in GET /api/votes:', error);
-    return res.status(500).json({ success: false, message: 'Server Error' });
+    console.error('GET /api/votes error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch votes' });
   }
 }
