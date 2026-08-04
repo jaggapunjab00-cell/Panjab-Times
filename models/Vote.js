@@ -23,4 +23,5 @@ const VoteSchema = new mongoose.Schema(
   }
 );
 
+export { PUNJAB_DISTRICTS };
 export default mongoose.models.Vote || mongoose.model('Vote', VoteSchema);
