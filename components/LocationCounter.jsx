@@ -7,7 +7,7 @@ const TOKEN_KEY    = 'pt_voter_token';
 const DISTRICT_KEY = 'pt_voted_district';
 const OPEN_KEY     = 'pt_widget_open';
 
-export default function LocationCounter() {
+export default function LocationCounter({ isMobile = false }) {
   const [open,          setOpen]          = useState(false);
   const [voteData,      setVoteData]      = useState([]);
   const [total,         setTotal]         = useState(0);
@@ -75,42 +75,56 @@ export default function LocationCounter() {
   const topD      = voteData[0]?.count > 0 ? voteData[0] : null;
 
   return (
-    <div className="loc-widget">
+    <div className={`loc-widget ${isMobile ? 'loc-widget-mobile' : ''}`}>
       {/* Header */}
-      <div className="loc-header" onClick={toggle} role="button" tabIndex={0}
-        onKeyDown={e => e.key === 'Enter' && toggle()} aria-expanded={open}>
-        <div className="loc-header-label">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-          Punjab Districts
-          {total > 0 && (
-            <span style={{
-              background: 'rgba(232,150,12,0.2)', border: '1px solid rgba(232,150,12,0.4)',
-              borderRadius: '99px', padding: '1px 7px', fontSize: '0.6rem',
-              color: '#F59E0B', fontWeight: 700,
-            }}>{total.toLocaleString()}</span>
-          )}
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.4)' }}>
-          {voted && !open && (
-            <span style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.6rem', color: '#F59E0B', opacity: 0.8, maxWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {voted}
-            </span>
-          )}
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
-            style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s ease' }}>
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </div>
+      <div className={isMobile ? "bottom-nav-item loc-header-mobile" : "loc-header"} onClick={toggle} role="button" tabIndex={0}
+        onKeyDown={e => e.key === 'Enter' && toggle()} aria-expanded={open}
+        style={isMobile ? { border: 'none', background: 'transparent' } : {}}>
+        
+        {isMobile ? (
+          <>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Regions</span>
+          </>
+        ) : (
+          <>
+            <div className="loc-header-label">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              Punjab Districts
+              {total > 0 && (
+                <span style={{
+                  background: 'rgba(232,150,12,0.2)', border: '1px solid rgba(232,150,12,0.4)',
+                  borderRadius: '99px', padding: '1px 7px', fontSize: '0.6rem',
+                  color: '#F59E0B', fontWeight: 700,
+                }}>{total.toLocaleString()}</span>
+              )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.4)' }}>
+              {voted && !open && (
+                <span style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.6rem', color: '#F59E0B', opacity: 0.8, maxWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {voted}
+                </span>
+              )}
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s ease' }}>
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Body */}
       {open && (
-        <div className="loc-body">
+        <div className={`loc-body ${isMobile ? 'loc-body-mobile' : ''}`}>
 
           {/* Top district */}
           {topD && (

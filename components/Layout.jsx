@@ -92,6 +92,39 @@ export default function Layout({ children, title, onPublish }) {
 
       <main>{children}</main>
 
+      {/* ── MOBILE BOTTOM NAV ── */}
+      <nav className="mobile-bottom-nav">
+        <div className="bottom-nav-item">
+          <LocationCounter isMobile />
+        </div>
+        
+        <Link href="/chat" className="bottom-nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Chat</span>
+        </Link>
+
+        {onPublish && (
+          <button className="bottom-nav-item write-btn" onClick={onPublish}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span>Write</span>
+          </button>
+        )}
+
+        <button className="bottom-nav-item" onClick={() => setShowMetrics(true)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M12 20V10"/>
+            <path d="M18 20V4"/>
+            <path d="M6 20v-4"/>
+          </svg>
+          <span>Metrics</span>
+        </button>
+      </nav>
+
       {showMetrics && <MetricsModal onClose={() => setShowMetrics(false)} />}
 
       <footer style={{
