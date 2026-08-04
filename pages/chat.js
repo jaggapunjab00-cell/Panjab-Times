@@ -89,7 +89,7 @@ function ChatLogin({ onLogin }) {
   );
 }
 
-function ChatRoom({ userName }) {
+function ChatRoom({ userName, onLogout }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -177,6 +177,15 @@ function ChatRoom({ userName }) {
             </p>
           </div>
         </div>
+        <button onClick={onLogout} style={{
+          background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444',
+          border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '99px',
+          padding: '0.4rem 0.85rem', fontFamily: 'var(--font-body)',
+          fontSize: '0.7rem', fontWeight: 600, cursor: 'pointer',
+          transition: 'all var(--transition-fast)'
+        }}>
+          Logout
+        </button>
       </header>
 
       <div ref={chatContainerRef} style={{
@@ -284,11 +293,17 @@ export default function ChatPage() {
     setUserName(name);
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('pt_chat_auth');
+    sessionStorage.removeItem('pt_chat_name');
+    setUserName(null);
+  };
+
   if (!isClient) return null;
 
   if (!userName) {
     return <ChatLogin onLogin={handleLogin} />;
   }
 
-  return <ChatRoom userName={userName} />;
+  return <ChatRoom userName={userName} onLogout={handleLogout} />;
 }
