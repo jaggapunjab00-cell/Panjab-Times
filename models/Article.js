@@ -28,6 +28,10 @@ const ArticleSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    publishedAt: {
+      type: Date,
+      default: Date.now,
+    },
     readTime: {
       type: Number, // minutes — computed on save
       default: 1,

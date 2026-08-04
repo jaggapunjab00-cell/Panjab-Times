@@ -28,13 +28,15 @@ router.get(async (req, res) => {
     const limit = parseInt(req.query.limit || '12', 10);
     const skip  = (page - 1) * limit;
 
+    const query = { publishedAt: { $lte: new Date() } };
+
     const [articles, total] = await Promise.all([
-      Article.find({})
-        .sort({ createdAt: -1 })
+      Article.find(query)
+        .sort({ publishedAt: -1 })
         .skip(skip)
         .limit(limit)
         .lean(),
-      Article.countDocuments({}),
+      Article.countDocuments(query),
     ]);
 
     res.status(200).json({
@@ -59,7 +61,7 @@ router.post(upload.single('image'), async (req, res) => {
   try {
     await connectDB();
 
-    const { author, title, body } = req.body;
+    const { author, title, body, publishedAt } = req.body;
 
     // Basic validation
     if (!author?.trim() || !title?.trim() || !body?.trim()) {
@@ -79,13 +81,19 @@ router.post(upload.single('image'), async (req, res) => {
       imagePublicId = result.publicId;
     }
 
-    const article = await Article.create({
+    const articleData = {
       author:  author.trim(),
       title:   title.trim(),
       body:    body.trim(),
       imageUrl,
       imagePublicId,
-    });
+    };
+
+    if (publishedAt) {
+      articleData.publishedAt = new Date(publishedAt);
+    }
+
+    const article = await Article.create(articleData);
 
     res.status(201).json({ success: true, data: article });
   } catch (error) {
