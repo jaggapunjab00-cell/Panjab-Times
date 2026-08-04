@@ -1176,23 +1176,23 @@ a { text-decoration: none; color: inherit; }
   }
   
   .bottom-nav-item.write-btn {
-    background: var(--saffron);
-    color: #fff;
-    border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    justify-content: center;
-    transform: translateY(-20px);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+    background: none;
+    color: var(--saffron);
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    justify-content: flex-start;
+    transform: none;
+    box-shadow: none;
   }
   
   .bottom-nav-item.write-btn span {
-    display: none;
+    display: inline;
   }
   
   .bottom-nav-item.write-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
   
   /* Location Counter Mobile Adjustments */
