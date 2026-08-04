@@ -1,4 +1,4 @@
-import nextConnect from 'next-connect';
+import { createRouter } from 'next-connect';
 import multer from 'multer';
 import connectDB from '../../../lib/mongodb';
 import Article from '../../../models/Article';
@@ -17,20 +17,10 @@ const upload = multer({
   },
 });
 
-const handler = nextConnect({
-  onError(error, req, res) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ success: false, message: error.message || 'Server error' });
-  },
-  onNoMatch(req, res) {
-    res.status(405).json({ success: false, message: 'Method not allowed' });
-  },
-});
+const router = createRouter();
 
 // ── GET /api/articles  →  fetch all articles, newest first ──
-handler.get(async (req, res) => {
+router.get(async (req, res) => {
   try {
     await connectDB();
 
@@ -65,7 +55,7 @@ handler.get(async (req, res) => {
 });
 
 // ── POST /api/articles  →  create a new article ──
-handler.post(upload.single('image'), async (req, res) => {
+router.post(upload.single('image'), async (req, res) => {
   try {
     await connectDB();
 
@@ -114,4 +104,14 @@ export const config = {
   },
 };
 
-export default handler;
+export default router.handler({
+  onError(error, req, res) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ success: false, message: error.message || 'Server error' });
+  },
+  onNoMatch(req, res) {
+    res.status(405).json({ success: false, message: 'Method not allowed' });
+  },
+});
