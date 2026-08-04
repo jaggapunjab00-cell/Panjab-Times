@@ -1102,13 +1102,6 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 768px) {
   .hero-article { grid-template-columns: 1fr; border-radius: var(--radius-lg); }
   .hero-img-wrap { min-height: 300px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-  .hero-body { padding: 2rem; }
-  .feature-grid { grid-template-columns: 1fr; }
-  .stream-grid { grid-template-columns: 1fr; }
-  
-@media (max-width: 768px) {
-  .hero-article { grid-template-columns: 1fr; border-radius: var(--radius-lg); }
-  .hero-img-wrap { min-height: 300px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
   .hero-body { padding: 1.5rem; }
   .feature-grid { grid-template-columns: 1fr; }
   .stream-grid { grid-template-columns: 1fr; }

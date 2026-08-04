@@ -1,6 +1,6 @@
 import connectDB from '../../../lib/mongodb';
 import Vote from '../../../models/Vote';
-import { PUNJAB_DISTRICTS } from '../../../models/Vote';
+import { PUNJAB_DISTRICTS } from '../../../lib/districts';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
