@@ -1070,15 +1070,39 @@ a { text-decoration: none; color: inherit; }
   .hero-body { padding: 2rem; }
   .feature-grid { grid-template-columns: 1fr; }
   .stream-grid { grid-template-columns: 1fr; }
-  .masthead-main { grid-template-columns: 1fr; gap: 1rem; }
-  .masthead-left { justify-content: center; margin-bottom: 0.5rem; }
-  .masthead-right { justify-content: center; }
-  .loc-widget { width: 100%; max-width: 320px; margin: 0 auto; }
+  
+  /* Masthead Mobile Optimizations */
+  .masthead-inner { padding: 0 1rem; }
+  .masthead-topbar { display: none; }
+  .masthead-main { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 1rem 0;
+    gap: 0.75rem;
+  }
+  .masthead-center { 
+    width: 100%; 
+    order: -1; 
+    margin-bottom: 0.25rem;
+  }
+  .masthead-left, .masthead-right { width: auto; justify-content: center; margin-bottom: 0; }
+  .masthead-right { gap: 0.5rem !important; }
+  .masthead-publish-btn {
+    padding: 0.5rem;
+    gap: 0;
+  }
+  .masthead-publish-btn svg { width: 16px; height: 16px; margin: 0; }
+  .hidden-mobile { display: none; }
+  
+  .loc-widget { width: 100%; max-width: 150px; margin: 0; }
+  .loc-header { padding: 0.5rem 0.75rem; }
   .page-wrap { padding: 0 1rem 5rem; }
 }
 
 @media (max-width: 480px) {
-  .masthead-wordmark { font-size: 2.2rem; }
+  .masthead-wordmark { font-size: 1.8rem; }
 }
 
 /* ─────────────────────────────────────────
