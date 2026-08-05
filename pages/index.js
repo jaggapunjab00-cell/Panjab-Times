@@ -3,8 +3,6 @@ import Head from 'next/head';
 import ArticleCard, { HeroCard, FeatureCard } from '../components/ArticleCard';
 import PublishModal from '../components/PublishModal';
 
-const POPULAR_DISTRICTS = ['All Punjab', 'Lahore', 'Faisalabad', 'Rawalpindi', 'Multan', 'Gujranwala', 'Sialkot', 'Bahawalpur'];
-
 function SkeletonHero() {
   return (
     <div className="hero-article-skeleton">
@@ -66,27 +64,34 @@ function SkeletonStream() {
   );
 }
 
-function EmptyState({ onPublish, selectedDistrict }) {
+function EmptyState({ onPublish, searchQuery, onClearSearch }) {
   return (
     <div style={{ textAlign: 'center', padding: '5rem 2rem', background: '#fff', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
       <div style={{ width: '64px', height: '64px', background: 'rgba(245,158,11,0.1)', color: '#F59E0B', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="12" y1="18" x2="12" y2="12"/>
-          <line x1="9" y1="15" x2="15" y2="15"/>
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
       </div>
       <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.6rem', color: '#020617', marginBottom: '0.5rem' }}>
-        {selectedDistrict === 'All Punjab' ? 'No stories published yet' : `No stories found for ${selectedDistrict}`}
+        {searchQuery ? `No stories matching "${searchQuery}"` : 'No stories published yet'}
       </h3>
       <p style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.92rem', color: '#64748B', maxWidth: '380px', margin: '0 auto 1.75rem', lineHeight: 1.6 }}>
-        Be the first journalist or citizen reporter to publish news from {selectedDistrict === 'All Punjab' ? 'Punjab' : selectedDistrict}.
+        {searchQuery
+          ? 'Try checking for spelling errors or searching for different keywords.'
+          : 'Be the first journalist or citizen reporter to publish news on The Punjab Times.'}
       </p>
-      <button className="btn-saffron" onClick={onPublish} style={{ margin: '0 auto' }}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Write the first article
-      </button>
+
+      {searchQuery ? (
+        <button className="btn-outline" onClick={onClearSearch} style={{ margin: '0 auto', padding: '0.75rem 1.75rem' }}>
+          Clear search query
+        </button>
+      ) : (
+        <button className="btn-saffron" onClick={onPublish} style={{ margin: '0 auto' }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Write the first article
+        </button>
+      )}
     </div>
   );
 }
@@ -106,14 +111,14 @@ function Toast({ message, type = 'success', onDone }) {
 }
 
 export default function Home({ globalShowPublish, setGlobalShowPublish }) {
-  const [articles,          setArticles]          = useState([]);
-  const [pagination,        setPagination]        = useState(null);
-  const [pageLoading,       setPageLoading]       = useState(true);
-  const [moreLoading,       setMoreLoading]       = useState(false);
-  const [currentPage,       setCurrentPage]       = useState(1);
-  const [showPublish,       setShowPublish]       = useState(false);
-  const [selectedDistrict,  setSelectedDistrict]  = useState('All Punjab');
-  const [toast,             setToast]             = useState(null);
+  const [articles,     setArticles]     = useState([]);
+  const [pagination,   setPagination]   = useState(null);
+  const [pageLoading,  setPageLoading]  = useState(true);
+  const [moreLoading,  setMoreLoading]  = useState(false);
+  const [currentPage,  setCurrentPage]  = useState(1);
+  const [showPublish,  setShowPublish]  = useState(false);
+  const [searchQuery,  setSearchQuery]  = useState('');
+  const [toast,        setToast]        = useState(null);
 
   // Sync global publish trigger from Layout's Write Article button
   useEffect(() => {
@@ -124,7 +129,7 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
     try {
       if (page === 1) setPageLoading(true);
       else            setMoreLoading(true);
-      const res  = await fetch(`/api/articles?page=${page}&limit=15`);
+      const res  = await fetch(`/api/articles?page=${page}&limit=20`);
       const data = await res.json();
       if (!data.success) throw new Error(data.message || 'Failed to load stories');
       setArticles(prev => append ? [...prev, ...data.data] : data.data);
@@ -145,11 +150,12 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
     setToast({ message: `"${article.title}" published!`, type: 'success' });
   }, []);
 
-  // Filter articles by selected district pill
+  // Filter articles by search query on title
   const filteredArticles = useMemo(() => {
-    if (selectedDistrict === 'All Punjab') return articles;
-    return articles.filter(a => (a.district || '').toLowerCase() === selectedDistrict.toLowerCase());
-  }, [articles, selectedDistrict]);
+    if (!searchQuery.trim()) return articles;
+    const q = searchQuery.toLowerCase().trim();
+    return articles.filter(a => (a.title || '').toLowerCase().includes(q));
+  }, [articles, searchQuery]);
 
   // Editorial breakdown: hero (0), feature (1,2), stream (3+)
   const hero    = filteredArticles[0]    || null;
@@ -178,27 +184,48 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
           )}
         </div>
 
-        {/* ── District Filter Pills ── */}
-        <div className="district-filter-bar">
-          <span className="filter-label">Filter by District:</span>
-          <div className="district-pills-scroll">
-            {POPULAR_DISTRICTS.map(dist => (
+        {/* ── Title Search Input Bar ── */}
+        <div className="title-search-bar">
+          <div className="search-input-wrap">
+            <span className="search-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </span>
+            <input
+              type="text"
+              className="title-search-input"
+              placeholder="Search stories by title..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
               <button
-                key={dist}
-                className={`district-pill-btn ${selectedDistrict === dist ? 'active' : ''}`}
-                onClick={() => setSelectedDistrict(dist)}
+                className="search-clear-btn"
+                onClick={() => setSearchQuery('')}
+                aria-label="Clear search"
               >
-                {dist}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
               </button>
-            ))}
+            )}
           </div>
+
+          {searchQuery && (
+            <div className="search-results-tag">
+              Showing {filteredArticles.length} {filteredArticles.length === 1 ? 'result' : 'results'} for &ldquo;{searchQuery}&rdquo;
+            </div>
+          )}
         </div>
 
         {/* ── Section eyebrow ── */}
         <div className="section-eyebrow">
           <div className="section-eyebrow-rule-short" />
           <span className="section-eyebrow-text">
-            {selectedDistrict === 'All Punjab' ? 'Lead & Top Stories' : `${selectedDistrict} Headlines`}
+            {searchQuery ? `Search Results (${filteredArticles.length})` : 'Lead & Top Stories'}
           </span>
           <div className="section-eyebrow-rule" />
         </div>
@@ -214,7 +241,11 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
 
         {/* ── Empty State ── */}
         {!pageLoading && filteredArticles.length === 0 && (
-          <EmptyState onPublish={() => setShowPublish(true)} selectedDistrict={selectedDistrict} />
+          <EmptyState
+            onPublish={() => setShowPublish(true)}
+            searchQuery={searchQuery}
+            onClearSearch={() => setSearchQuery('')}
+          />
         )}
 
         {/* ── Main Editorial Feed ── */}
@@ -253,7 +284,7 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
             )}
 
             {/* Load More Button */}
-            {pagination?.hasMore && selectedDistrict === 'All Punjab' && (
+            {pagination?.hasMore && !searchQuery && (
               <div style={{ textAlign: 'center', marginTop: '3rem' }}>
                 <button
                   onClick={() => fetchArticles(currentPage + 1, true)}

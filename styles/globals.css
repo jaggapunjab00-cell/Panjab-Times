@@ -2219,57 +2219,77 @@ a { text-decoration: none; color: inherit; }
   border-radius: var(--radius-full);
 }
 
-.district-filter-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* Title Search Bar */
+.title-search-bar {
   margin-bottom: 2rem;
-  overflow: hidden;
 }
 
-.filter-label {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--slate-2);
-  white-space: nowrap;
-}
-
-.district-pills-scroll {
+.search-input-wrap {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-width: thin;
+  width: 100%;
 }
 
-.district-pill-btn {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.4rem 0.9rem;
-  border-radius: var(--radius-full);
+.search-icon {
+  position: absolute;
+  left: 1.25rem;
+  color: var(--slate-2);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.title-search-input {
+  width: 100%;
+  padding: 0.9rem 3rem 0.9rem 3.25rem;
   background: #fff;
   border: 1px solid var(--rule-2);
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  outline: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  transition: all var(--transition-base);
+}
+
+.title-search-input::placeholder {
+  color: #94A3B8;
+}
+
+.title-search-input:focus {
+  border-color: var(--saffron);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.15);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 1rem;
+  background: rgba(0,0,0,0.06);
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--slate-1);
   cursor: pointer;
-  white-space: nowrap;
   transition: all var(--transition-fast);
 }
 
-.district-pill-btn:hover {
-  border-color: var(--saffron);
-  color: var(--ink);
+.search-clear-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
 }
 
-.district-pill-btn.active {
-  background: var(--saffron);
-  border-color: var(--saffron);
-  color: #fff;
-  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+.search-results-tag {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--slate-2);
+  margin-top: 0.6rem;
+  margin-left: 0.25rem;
 }
 
 /* Card District Pills */
