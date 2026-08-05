@@ -75,6 +75,13 @@ export default function Layout({ children, title, onPublish }) {
                 </svg>
                 <span className="hidden-mobile">Metrics</span>
               </button>
+              <Link href="/admin/login" className="masthead-publish-btn" style={{ background: 'transparent', boxShadow: 'none', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span className="hidden-mobile">Admin</span>
+              </Link>
               {onPublish && (
                 <button className="masthead-publish-btn" onClick={onPublish}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
