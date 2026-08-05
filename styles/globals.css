@@ -1126,7 +1126,7 @@ a { text-decoration: none; color: inherit; }
     flex-wrap: nowrap; 
     justify-content: center; 
     align-items: center;
-    padding: 0.5rem 0;
+    padding: 0.85rem 0;
   }
   .masthead-center { 
     width: auto;
@@ -1145,8 +1145,8 @@ a { text-decoration: none; color: inherit; }
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.2);
