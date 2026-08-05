@@ -1140,6 +1140,7 @@ a { text-decoration: none; color: inherit; }
   /* Hide desktop nav elements on mobile */
   .masthead-left, .masthead-right { display: none !important; }
   .hidden-mobile { display: none; }
+  footer { display: none !important; }
   
   .mobile-login-icon {
     display: flex;
