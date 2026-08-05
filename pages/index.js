@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Head from 'next/head';
 import ArticleCard, { HeroCard, FeatureCard } from '../components/ArticleCard';
-import ArticleModal from '../components/ArticleModal';
 import PublishModal from '../components/PublishModal';
+
+const POPULAR_DISTRICTS = ['All Punjab', 'Lahore', 'Faisalabad', 'Rawalpindi', 'Multan', 'Gujranwala', 'Sialkot', 'Bahawalpur'];
 
 function SkeletonHero() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', background: '#fff', marginBottom: '3px' }}>
+    <div className="hero-article-skeleton">
       <div className="skeleton" style={{ minHeight: '380px' }} />
       <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div className="skeleton" style={{ height: '10px', width: '80px' }} />
@@ -29,10 +30,10 @@ function SkeletonHero() {
 
 function SkeletonFeature() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px', marginBottom: '3px' }}>
-      {[0,1].map(i => (
-        <div key={i} style={{ background: '#fff' }}>
-          <div className="skeleton" style={{ aspectRatio: '3/2' }} />
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+      {[0, 1].map(i => (
+        <div key={i} style={{ background: '#fff', borderRadius: '12px', overflow: 'hidden', border: '1px solid #E2E8F0' }}>
+          <div className="skeleton" style={{ aspectRatio: '16/9' }} />
           <div style={{ padding: '1.4rem 1.6rem' }}>
             <div className="skeleton" style={{ height: '10px', width: '70px', marginBottom: '10px' }} />
             <div className="skeleton" style={{ height: '18px', width: '95%', marginBottom: '6px' }} />
@@ -48,10 +49,10 @@ function SkeletonFeature() {
 
 function SkeletonStream() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '3px' }}>
+    <div className="stream-grid">
       {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} style={{ background: '#fff' }}>
-          <div className="skeleton" style={{ aspectRatio: '4/3' }} />
+        <div key={i} style={{ background: '#fff', borderRadius: '12px', overflow: 'hidden', border: '1px solid #E2E8F0' }}>
+          <div className="skeleton" style={{ aspectRatio: '16/9' }} />
           <div style={{ padding: '1.1rem 1.25rem' }}>
             <div className="skeleton" style={{ height: '9px', width: '60px', marginBottom: '8px' }} />
             <div className="skeleton" style={{ height: '16px', width: '90%', marginBottom: '5px' }} />
@@ -65,23 +66,25 @@ function SkeletonStream() {
   );
 }
 
-function EmptyState({ onPublish }) {
+function EmptyState({ onPublish, selectedDistrict }) {
   return (
-    <div style={{ textAlign: 'center', padding: '6rem 2rem', background: '#fff' }}>
-      <div style={{ width: '64px', height: '64px', background: 'rgba(27,58,45,0.06)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="1.5" strokeLinecap="round" style={{ opacity: 0.5 }}>
+    <div style={{ textAlign: 'center', padding: '5rem 2rem', background: '#fff', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
+      <div style={{ width: '64px', height: '64px', background: 'rgba(245,158,11,0.1)', color: '#F59E0B', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
           <line x1="12" y1="18" x2="12" y2="12"/>
           <line x1="9" y1="15" x2="15" y2="15"/>
         </svg>
       </div>
-      <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.5rem', color: '#020617', marginBottom: '0.5rem' }}>No articles yet</h3>
-      <p style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.9rem', color: '#718096', marginBottom: '1.75rem', maxWidth: '300px', margin: '0 auto 1.75rem', lineHeight: 1.65 }}>
-        The Punjab Times is waiting for its first story. Be the voice that starts the conversation.
+      <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.6rem', color: '#020617', marginBottom: '0.5rem' }}>
+        {selectedDistrict === 'All Punjab' ? 'No stories published yet' : `No stories found for ${selectedDistrict}`}
+      </h3>
+      <p style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.92rem', color: '#64748B', maxWidth: '380px', margin: '0 auto 1.75rem', lineHeight: 1.6 }}>
+        Be the first journalist or citizen reporter to publish news from {selectedDistrict === 'All Punjab' ? 'Punjab' : selectedDistrict}.
       </p>
       <button className="btn-saffron" onClick={onPublish} style={{ margin: '0 auto' }}>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Write the first article
       </button>
     </div>
@@ -102,16 +105,15 @@ function Toast({ message, type = 'success', onDone }) {
   );
 }
 
-// ── MAIN PAGE ────────────────────────────────────────────
 export default function Home({ globalShowPublish, setGlobalShowPublish }) {
-  const [articles,      setArticles]      = useState([]);
-  const [pagination,    setPagination]    = useState(null);
-  const [pageLoading,   setPageLoading]   = useState(true);
-  const [moreLoading,   setMoreLoading]   = useState(false);
-  const [currentPage,   setCurrentPage]   = useState(1);
-  const [activeArticle, setActiveArticle] = useState(null);
-  const [showPublish,   setShowPublish]   = useState(false);
-  const [toast,         setToast]         = useState(null);
+  const [articles,          setArticles]          = useState([]);
+  const [pagination,        setPagination]        = useState(null);
+  const [pageLoading,       setPageLoading]       = useState(true);
+  const [moreLoading,       setMoreLoading]       = useState(false);
+  const [currentPage,       setCurrentPage]       = useState(1);
+  const [showPublish,       setShowPublish]       = useState(false);
+  const [selectedDistrict,  setSelectedDistrict]  = useState('All Punjab');
+  const [toast,             setToast]             = useState(null);
 
   // Sync global publish trigger from Layout's Write Article button
   useEffect(() => {
@@ -128,8 +130,8 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
       setArticles(prev => append ? [...prev, ...data.data] : data.data);
       setPagination(data.pagination);
       setCurrentPage(page);
-    } catch (e) { 
-      console.error(e); 
+    } catch (e) {
+      console.error(e);
       setToast({ message: 'Unable to connect to the feed. Please try again.', type: 'error' });
     }
     finally { setPageLoading(false); setMoreLoading(false); }
@@ -143,10 +145,16 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
     setToast({ message: `"${article.title}" published!`, type: 'success' });
   }, []);
 
-  // Layout: hero(0), feature(1,2), stream(3+)
-  const hero    = articles[0]    || null;
-  const feature = articles.slice(1, 3);
-  const stream  = articles.slice(3);
+  // Filter articles by selected district pill
+  const filteredArticles = useMemo(() => {
+    if (selectedDistrict === 'All Punjab') return articles;
+    return articles.filter(a => (a.district || '').toLowerCase() === selectedDistrict.toLowerCase());
+  }, [articles, selectedDistrict]);
+
+  // Editorial breakdown: hero (0), feature (1,2), stream (3+)
+  const hero    = filteredArticles[0]    || null;
+  const feature = filteredArticles.slice(1, 3);
+  const stream  = filteredArticles.slice(3);
 
   return (
     <>
@@ -156,27 +164,46 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
 
       <div className="page-wrap" style={{ paddingTop: '2.5rem' }}>
 
-        {/* ── Live strip ── */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem' }}>
-          <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#16a34a', display: 'inline-block', animation: 'blink 2.5s ease-in-out infinite', flexShrink: 0 }} />
-          <span style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#020617' }}>Live Feed</span>
-          <span style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.68rem', color: '#718096' }}>— articles published by readers across Punjab</span>
+        {/* ── Header Live Feed Strip ── */}
+        <div className="feed-header-strip">
+          <div className="live-pulse-group">
+            <span className="pulse-dot" />
+            <span className="feed-strip-title">LIVE PUNJAB FEED</span>
+            <span className="feed-strip-subtitle">— News and reports directly from readers across Punjab</span>
+          </div>
           {pagination?.total > 0 && !pageLoading && (
-            <span style={{ marginLeft: 'auto', fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.68rem', color: '#718096' }}>
-              {pagination.total} {pagination.total === 1 ? 'article' : 'articles'}
-            </span>
+            <div className="feed-count-badge">
+              <span>{pagination.total} {pagination.total === 1 ? 'Story' : 'Stories'}</span>
+            </div>
           )}
-          <style>{`@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }`}</style>
+        </div>
+
+        {/* ── District Filter Pills ── */}
+        <div className="district-filter-bar">
+          <span className="filter-label">Filter by District:</span>
+          <div className="district-pills-scroll">
+            {POPULAR_DISTRICTS.map(dist => (
+              <button
+                key={dist}
+                className={`district-pill-btn ${selectedDistrict === dist ? 'active' : ''}`}
+                onClick={() => setSelectedDistrict(dist)}
+              >
+                {dist}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* ── Section eyebrow ── */}
         <div className="section-eyebrow">
           <div className="section-eyebrow-rule-short" />
-          <span className="section-eyebrow-text">From Every Corner of Punjab</span>
+          <span className="section-eyebrow-text">
+            {selectedDistrict === 'All Punjab' ? 'Lead & Top Stories' : `${selectedDistrict} Headlines`}
+          </span>
           <div className="section-eyebrow-rule" />
         </div>
 
-        {/* ── Loading skeletons ── */}
+        {/* ── Loading Skeletons ── */}
         {pageLoading && (
           <>
             <SkeletonHero />
@@ -185,86 +212,73 @@ export default function Home({ globalShowPublish, setGlobalShowPublish }) {
           </>
         )}
 
-        {/* ── Empty state ── */}
-        {!pageLoading && articles.length === 0 && (
-          <EmptyState onPublish={() => setShowPublish(true)} />
+        {/* ── Empty State ── */}
+        {!pageLoading && filteredArticles.length === 0 && (
+          <EmptyState onPublish={() => setShowPublish(true)} selectedDistrict={selectedDistrict} />
         )}
 
-        {/* ── Editorial grid ── */}
-        {!pageLoading && articles.length > 0 && (
+        {/* ── Main Editorial Feed ── */}
+        {!pageLoading && filteredArticles.length > 0 && (
           <>
-            {/* Hero */}
+            {/* Hero Lead Story */}
             {hero && (
-              <HeroCard article={hero} onClick={() => setActiveArticle(hero)} />
+              <HeroCard article={hero} />
             )}
 
-            {/* Feature row */}
+            {/* Feature Row */}
             {feature.length > 0 && (
               <div className="feature-grid">
                 {feature.map(a => (
-                  <FeatureCard key={a._id} article={a} onClick={() => setActiveArticle(a)} />
+                  <FeatureCard key={a._id} article={a} />
                 ))}
               </div>
             )}
 
-            {/* Stream */}
+            {/* Stream Row */}
             {stream.length > 0 && (
               <>
-                {stream.length >= 3 && (
-                  <div style={{ margin: '2rem 0 1.25rem' }}>
-                    <div className="section-eyebrow">
-                      <div className="section-eyebrow-rule-short" />
-                      <span className="section-eyebrow-text">More Stories</span>
-                      <div className="section-eyebrow-rule" />
-                    </div>
+                <div style={{ margin: '2.5rem 0 1.25rem' }}>
+                  <div className="section-eyebrow">
+                    <div className="section-eyebrow-rule-short" />
+                    <span className="section-eyebrow-text">Explore More Punjab Stories</span>
+                    <div className="section-eyebrow-rule" />
                   </div>
-                )}
+                </div>
                 <div className="stream-grid">
                   {stream.map(a => (
-                    <ArticleCard key={a._id} article={a} onClick={() => setActiveArticle(a)} />
+                    <ArticleCard key={a._id} article={a} />
                   ))}
                 </div>
               </>
             )}
 
-            {/* Load more */}
-            {pagination?.hasMore && (
-              <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+            {/* Load More Button */}
+            {pagination?.hasMore && selectedDistrict === 'All Punjab' && (
+              <div style={{ textAlign: 'center', marginTop: '3rem' }}>
                 <button
                   onClick={() => fetchArticles(currentPage + 1, true)}
                   disabled={moreLoading}
                   className="btn-outline"
-                  style={{ padding: '0.85rem 2.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.75rem' }}
+                  style={{ padding: '0.9rem 2.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.75rem' }}
                 >
                   {moreLoading
-                    ? <><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>Loading…</>
-                    : 'Load more stories'
+                    ? <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Loading stories…</>
+                    : 'Load More Punjab Stories'
                   }
                 </button>
-                <p style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.7rem', color: '#718096', marginTop: '0.65rem' }}>
-                  Showing {articles.length} of {pagination.total}
+                <p style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.72rem', color: '#718096', marginTop: '0.65rem' }}>
+                  Displaying {articles.length} of {pagination.total} articles
                 </p>
-              </div>
-            )}
-
-            {!pagination?.hasMore && articles.length > 12 && (
-              <div style={{ textAlign: 'center', padding: '2rem 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-                <div style={{ width: '48px', height: '1px', background: '#E4E4DF' }} />
-                <span style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#718096' }}>
-                  All {pagination.total} articles
-                </span>
-                <div style={{ width: '48px', height: '1px', background: '#E4E4DF' }} />
               </div>
             )}
           </>
         )}
       </div>
 
-      {/* Modals */}
-      {activeArticle && <ArticleModal article={activeArticle} onClose={() => setActiveArticle(null)} />}
-      {showPublish   && <PublishModal onClose={() => setShowPublish(false)} onPublished={handlePublished} />}
+      {/* Publish Article Modal */}
+      {showPublish && <PublishModal onClose={() => setShowPublish(false)} onPublished={handlePublished} />}
 
-      {/* Toast */}
+      {/* Toast Notification */}
       {toast && <Toast message={toast.message} type={toast.type} onDone={() => setToast(null)} />}
     </>
   );

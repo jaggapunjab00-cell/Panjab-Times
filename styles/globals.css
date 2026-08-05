@@ -1843,3 +1843,444 @@ a { text-decoration: none; color: inherit; }
   .admin-topbar-inner { padding: 0 1rem; }
   .admin-page { padding: 1.5rem 1rem 4rem; }
 }
+
+/* ─────────────────────────────────────────
+   ARTICLE DETAIL PAGE & CARD UPGRADES
+───────────────────────────────────────── */
+.article-page-wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+}
+
+.article-page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule-2);
+}
+
+.article-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  background: #fff;
+  border: 1px solid var(--rule-2);
+  transition: all var(--transition-fast);
+}
+
+.article-back-btn:hover {
+  border-color: var(--saffron);
+  color: var(--saffron-dark);
+  transform: translateX(-3px);
+}
+
+.article-breadcrumbs {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--slate-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.article-breadcrumbs a {
+  color: var(--slate-2);
+  text-decoration: none;
+}
+
+.article-breadcrumbs a:hover {
+  color: var(--saffron-dark);
+}
+
+.crumb-sep {
+  opacity: 0.4;
+}
+
+.article-detail-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  padding: 2.75rem 3rem 3.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+  .article-page-wrap { padding: 1rem 0.85rem 4rem; }
+  .article-detail-card { padding: 1.5rem 1.25rem 2rem; border-radius: 12px; }
+}
+
+.article-header {
+  margin-bottom: 2.25rem;
+}
+
+.article-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.article-district-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--saffron-dark);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.article-read-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--slate-2);
+}
+
+.article-page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.75rem;
+}
+
+.article-author-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  flex-wrap: wrap;
+}
+
+.author-avatar-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.author-info {
+  flex: 1;
+  min-width: 160px;
+}
+
+.author-name {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.article-pub-meta {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--slate-2);
+}
+
+.article-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.article-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--rule-2);
+  background: #fff;
+  color: var(--slate-1);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.article-action-btn:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: var(--ink);
+}
+
+.article-action-btn.active {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: var(--saffron);
+  color: var(--saffron-dark);
+}
+
+.article-cover-frame {
+  width: 100%;
+  max-height: 480px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 2.5rem;
+  background: #020617;
+  border: 1px solid var(--rule-2);
+}
+
+.article-cover-image {
+  width: 100%;
+  height: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
+}
+
+.article-main-body {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1.85;
+  color: #1E293B;
+}
+
+.article-main-body p {
+  margin-bottom: 1.65rem;
+}
+
+.article-main-body p.first-paragraph::first-letter {
+  font-size: 3.2rem;
+  line-height: 0.85;
+  float: left;
+  margin-right: 10px;
+  margin-top: 4px;
+  font-weight: 700;
+  color: var(--saffron-dark);
+}
+
+.article-footer-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+}
+
+.footer-rule-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--saffron), transparent);
+  opacity: 0.4;
+}
+
+.footer-brand-tag {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  color: var(--slate-2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-dot {
+  color: var(--saffron);
+}
+
+.brand-motto {
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+/* Feed Strip & District Filter Bar */
+.feed-header-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: #fff;
+  border: 1px solid var(--rule-2);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.live-pulse-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+  display: inline-block;
+  animation: blink 2.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.feed-strip-title {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.feed-strip-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--slate-2);
+}
+
+@media (max-width: 640px) {
+  .feed-strip-subtitle { display: none; }
+}
+
+.feed-count-badge {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--saffron-dark);
+  background: rgba(245, 158, 11, 0.12);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.district-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.filter-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate-2);
+  white-space: nowrap;
+}
+
+.district-pills-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.district-pill-btn {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-full);
+  background: #fff;
+  border: 1px solid var(--rule-2);
+  color: var(--slate-1);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.district-pill-btn:hover {
+  border-color: var(--saffron);
+  color: var(--ink);
+}
+
+.district-pill-btn.active {
+  background: var(--saffron);
+  border-color: var(--saffron);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+}
+
+/* Card District Pills */
+.card-district-pill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: rgba(2, 6, 23, 0.75);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.card-district-pill.sm {
+  font-size: 0.6rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.hero-article-skeleton {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #fff;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+}
+
+@media (max-width: 768px) {
+  .hero-article-skeleton { grid-template-columns: 1fr; }
+}
+
+.byline-author-name {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.byline-meta-info {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--slate-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
