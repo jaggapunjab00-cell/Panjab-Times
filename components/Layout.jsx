@@ -60,6 +60,13 @@ export default function Layout({ children, title, onPublish }) {
               </div>
             </div>
 
+            {/* Mobile login icon (visible only on mobile via CSS) */}
+            <Link href="/admin/login" className="mobile-login-icon" aria-label="Admin Login">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </Link>
             <div className="masthead-right" style={{ gap: '1rem' }}>
               <Link href="/chat" className="masthead-publish-btn" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', boxShadow: 'none' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
