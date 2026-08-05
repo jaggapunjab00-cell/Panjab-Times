@@ -168,13 +168,24 @@ export default function Layout({ children, title, onPublish }) {
               A voice for every district
             </p>
           </div>
-          <p style={{
-            fontFamily: "'Outfit', system-ui, sans-serif",
-            fontSize: '0.72rem',
-            color: 'rgba(255,255,255,0.2)',
-          }}>
-            © {new Date().getFullYear()} The Punjab Times · Articles represent the views of their authors
-          </p>
+          <div style={{ textAlign: 'right' }}>
+            <p style={{
+              fontFamily: "'Outfit', system-ui, sans-serif",
+              fontSize: '0.72rem',
+              color: 'rgba(255,255,255,0.2)',
+              marginBottom: '4px'
+            }}>
+              © {new Date().getFullYear()} The Punjab Times · Articles represent the views of their authors
+            </p>
+            <Link href="/admin/login" style={{
+              fontFamily: "'Outfit', system-ui, sans-serif",
+              fontSize: '0.72rem',
+              color: 'rgba(255,255,255,0.4)',
+              textDecoration: 'none',
+            }}>
+              Admin Login
+            </Link>
+          </div>
         </div>
       </footer>
     </>
